@@ -10,6 +10,7 @@ public interface IUserService
 {
     IEnumerable<User> GetAll();
     User GetById(int id);
+    User GetUserByLogin(string login);
     void Create(CreateRequest model);
     void Update(int id, UpdateRequest model);
     void Delete(int id);
@@ -37,12 +38,20 @@ public class UserService : IUserService
     {
         return GetUser(id);
     }
+    
+    public User GetUserByLogin(string login)
+    {
+        return _context.Users.FirstOrDefault(u => u.Login == login) ?? throw new KeyNotFoundException("User not found");;
+    }
 
     public void Create(CreateRequest model)
     {
         // validate
         if (_context.Users.Any(x => x.Email == model.Email))
             throw new AppException("User with the email '" + model.Email + "' already exists");
+
+        if (_context.Users.Any(x => x.Login == model.Login))
+            throw new AppException("User with the login '" + model.Login + "' already exists");
 
         // map model to new user object
         var user = _mapper.Map<User>(model);
@@ -84,7 +93,6 @@ public class UserService : IUserService
 
     private User GetUser(int id)
     {
-        var user = _context.Users.Find(id) ?? throw new KeyNotFoundException("User not found");
-        return user;
+        return _context.Users.Find(id) ?? throw new KeyNotFoundException("User not found");
     }
 }
