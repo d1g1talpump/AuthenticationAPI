@@ -16,7 +16,7 @@ public class DataContext : DbContext
     {
         string s_AUTHENTICATION_DB_CONNECTION =  
             Environment.GetEnvironmentVariable("AUTHENTICATION_DB_CONNECTION") ?? 
-            throw new AppException("Database Connection Error");
+            throw new Exception("Database Connection Error");
             
         options.UseNpgsql(s_AUTHENTICATION_DB_CONNECTION);
     }

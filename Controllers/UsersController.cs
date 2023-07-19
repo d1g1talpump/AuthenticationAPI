@@ -2,7 +2,7 @@
 
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using AuthenticationAPI.Models.Users;
+using AuthenticationAPI.Models.Desktop;
 using AuthenticationAPI.Services;
 
 [ApiController]
@@ -10,14 +10,11 @@ using AuthenticationAPI.Services;
 public class UsersController : ControllerBase
 {
     private readonly IUserService _userService;
-    private IMapper _mapper;
 
     public UsersController(
-        IUserService userService,
-        IMapper mapper)
+        IUserService userService)
     {
         _userService = userService;
-        _mapper = mapper;
     }
 
     [HttpGet]
@@ -35,14 +32,14 @@ public class UsersController : ControllerBase
     }
 
     [HttpPost]
-    public IActionResult Create(CreateRequest model)
+    public IActionResult Create(CreateRequestApi model)
     {
         _userService.Create(model);
         return Ok(new { message = "User created" });
     }
 
     [HttpPut("{id}")]
-    public IActionResult Update(int id, UpdateRequest model)
+    public IActionResult Update(int id, UpdateRequestApi model)
     {
         _userService.Update(id, model);
         return Ok(new { message = "User updated" });

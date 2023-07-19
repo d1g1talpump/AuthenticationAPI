@@ -17,8 +17,11 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="7.0.9" />
     <PackageReference Include="Microsoft.OpenApi" Version="1.6.5" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="7.0.4" />
-    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
-   
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />   
+  </ItemGroup>
+  
+  <ItemGroup>
+    <ProjectReference Include="..\RequestMaker\RequestMaker.csproj" />
   </ItemGroup>
 
 </Project>

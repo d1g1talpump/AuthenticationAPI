@@ -14,7 +14,7 @@ var builder = WebApplication.CreateBuilder(args);
 
     string s_AUTHENTICATION_DB_CONNECTION = 
         Environment.GetEnvironmentVariable("AUTHENTICATION_DB_CONNECTION") ?? 
-        throw new AppException("Database Connection Error"); 
+        throw new Exception("Database Connection Error"); 
 
     services.AddDbContext<DataContext>(x => x.UseNpgsql(s_AUTHENTICATION_DB_CONNECTION));
 
@@ -49,9 +49,6 @@ var app = builder.Build();
         .AllowAnyOrigin()
         .AllowAnyMethod()
         .AllowAnyHeader());
-
-    // global error handler
-    app.UseMiddleware<ErrorHandlerMiddleware>();
 
     app.MapControllers();
 }

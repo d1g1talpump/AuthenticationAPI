@@ -1,10 +1,10 @@
 namespace AuthenticationAPI.Controllers;
 
 using static BCrypt.Net.BCrypt;
-using AuthenticationAPI.Helpers;
-using AuthenticationAPI.Models;
+using AuthenticationAPI.Models.Desktop;
 using AuthenticationAPI.Services;
 using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel;
 
 [ApiController]
 [Route("[controller]")]
@@ -17,13 +17,18 @@ public class LoginController : ControllerBase
         _userService = userService;
     }
 
-    [HttpPost]
-    public IActionResult Login(LoginRequest model)
+    [HttpPost("{isDesktop}")]
+    public IActionResult Login(bool isDesktop, LoginRequestApi model)
     {
         // Check if the user exists in the database based on the provided login
-        var login = model.Login ?? throw new AppException("Login cannot be empty");
-        
-        var user = _userService.GetUserByLogin(login);
+        string s_error_msg = "Login cannot be empty";
+        var exc = isDesktop ? new Win32Exception(s_error_msg) : new Exception(s_error_msg);
+        if(model.Login == null)
+        {
+            return BadRequest(exc);        
+        }
+
+        var user = _userService.GetUserByLogin(model.Login);
 
         if (user == null)
         {
